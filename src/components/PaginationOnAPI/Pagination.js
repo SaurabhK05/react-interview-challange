@@ -5,6 +5,7 @@ export default function Pagination() {
   const [currPageEntrie, setCurrPageEntrie] = React.useState([]);
   const [pageCount, setPageCount] = React.useState(1);
   const [arrayCount, setArrayCount] = React.useState(50);
+  const totalPage = Math.ceil(allEntries.count / 50);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -19,24 +20,39 @@ export default function Pagination() {
     fetchData();
   }, []);
 
-  const fetchPrevious = () => {};
+  const fetchPrevious = () => {
+    let currentEntryCount = arrayCount;
+    setPageCount((prevState) => prevState - 1);
+    let count = arrayCount - 50;
+    // console.log(count);
+    setArrayCount(count);
+    const newData = allEntries.entries.slice(count, currentEntryCount);
+    // console.log(newData, "newData");
+
+    setCurrPageEntrie(newData);
+  };
 
   const fetchNext = () => {
-    debugger;
     let currentEntryCount = arrayCount;
     setPageCount((prevState) => prevState + 1);
-    setArrayCount((prevState) => prevState + 50);
-    setCurrPageEntrie(allEntries.entries.slice(currentEntryCount, arrayCount));
+    let count = arrayCount + 50;
+    // console.log(count);
+    setArrayCount(count);
+    const newData = allEntries.entries.slice(currentEntryCount, count);
+    // console.log(newData, "newData");
 
-    console.log(currPageEntrie, arrayCount, "currPageEntrie");
+    setCurrPageEntrie(newData);
+
+    // console.log(currentEntryCount, arrayCount, "currPageEntrie");
   };
   return (
     <div>
       <div>
         <h2>Entrie 1</h2>
-        {currPageEntrie.map((el) => {
+        {currPageEntrie.map((el, ind) => {
           return (
             <ul key={el.Link}>
+              <li>{ind}</li>
               <li>
                 API: <strong>{el.API}</strong>
               </li>
@@ -47,8 +63,12 @@ export default function Pagination() {
           );
         })}
       </div>
-      <button onClick={fetchPrevious}>Previous</button>
-      <button onClick={fetchNext}>Next</button>
+      <button onClick={fetchPrevious} disabled={pageCount <= 1}>
+        Previous
+      </button>
+      <button onClick={fetchNext} disabled={pageCount >= totalPage}>
+        Next
+      </button>
     </div>
   );
 }
