@@ -1,6 +1,7 @@
 import Pagination from "./components/PaginationOnAPI/Pagination";
-import Stopwatch from "./components/PaginationOnAPI/Stopwatch";
+import Stopwatch from "./components/StopWatch/Stopwatch";
 import "./App.css";
+import Timer from "./components/Timer/Timer";
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       {/* <h1>Pagination</h1>
       <Pagination /> */}
       {/* <Stopwatch /> */}
+      <Timer />
     </>
   );
 }
